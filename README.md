@@ -279,3 +279,26 @@ if (status == CheckInOutStatus.CheckIn)
 | **Fragile status checks**         | Type-safe enum pattern                   |
 
 ## 📂 Project Structure
+```bash
+TestNest.SmartEnums/
+├── src/
+│   ├── Domain/
+│   │   ├── Exceptions
+│   │   │    ├── CheckInOutException.cs                # Custom exceptions
+│   │   ├── ValueObjects
+│   │   │    └── Common
+│   │   │    │   └── ValueObject.cs
+│   │   │    └── CheckInOut.cs                                # Sample implementation
+│   │   └── TestNest.StronglyTypeId.csproj
+│   │
+│   └── Console/                                           # Optional test console
+│   │   └── Program.cs
+│   │   └── TestNest.SmartEnums.Console.csproj
+│
+├── tests/
+│   ├── TestNest.SmartEnums.Test/
+│   │   ├── CheckInOutTestss.cs                    # Unit tests
+│   │   └── TestNest.StronglyTypeId.Test.csproj
+│
+├── README.md
+└── LICENSE
