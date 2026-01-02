@@ -302,3 +302,35 @@ TestNest.SmartEnums/
 │
 ├── README.md
 └── LICENSE
+```
+
+---
+
+## Project Management
+
+Track project progress, features, and user stories on our Azure DevOps board:
+
+- [Azure DevOps Board](https://dev.azure.com/tengtium-io/SmartEnums) - Epics, Features, and User Stories
+
+---
+
+## Related Projects
+
+- [TestNest.StronglyTypeId](https://github.com/DanteTuraSalvador/TestNest.StronglyTypeId) - Strongly Typed ID pattern implementation (GuestId, CustomerId, OrderId, ProductId)
+- [TestNest.ValueObjects](https://github.com/DanteTuraSalvador/TestNest.ValueObjects) - Value Object pattern implementation (Email, PhoneNumber, Address, Money, Currency, Price)
+
+---
+
+## Contributing
+
+Pull requests are welcome! Please:
+
+- Maintain test coverage
+- Follow existing code style
+- Add documentation for new features
+
+---
+
+## License
+
+This project is open-source and free to use.
