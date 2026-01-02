@@ -278,27 +278,74 @@ if (status == CheckInOutStatus.CheckIn)
 | **Invalid date ranges**           | Built-in temporal validation             |
 | **Fragile status checks**         | Type-safe enum pattern                   |
 
+## Visit Entity (Integration Demo)
+
+The **Visit** entity demonstrates how to combine SmartEnums with Strongly Typed IDs and Value Objects in a single domain entity:
+
+```csharp
+// Create a visit combining all DDD patterns
+var guestId = GuestId.New();
+var purpose = VisitPurpose.Create("Business meeting", VisitCategory.Business);
+var location = Address.Create("100 Main St", "New York", "NY", "10001", "USA");
+var email = Email.Create("visitor@example.com");
+
+var visit = Visit.Create(guestId, purpose, location, email, hostName: "John Smith");
+
+// Check-in the visitor (state transition: None -> CheckIn)
+visit.CheckIn();
+visit.AssignBadge("V-001");
+Console.WriteLine(visit.IsActive());  // true
+
+// Check-out (state transition: CheckIn -> CheckOut)
+visit.CheckOut();
+Console.WriteLine(visit.GetDuration());  // Duration of visit
+Console.WriteLine(visit.IsCompleted());  // true
+```
+
+### Visit Entity Structure
+
+| Component | Type | Description |
+|-----------|------|-------------|
+| `VisitId` | Strongly Typed ID | Unique visit identifier |
+| `GuestId` | Strongly Typed ID | Reference to the guest |
+| `CheckInOut` | SmartEnum | State machine for check-in/out |
+| `VisitPurpose` | Value Object | Reason and category for visit |
+| `Address` | Value Object | Location/venue address |
+| `Email` | Value Object | Notification email (optional) |
+| `PhoneNumber` | Value Object | Contact phone (optional) |
+
+### State Transitions
+
+```
+Pending (None) -> Active (CheckIn) -> Completed (CheckOut) -> Pending (Reset)
+```
+
 ## 📂 Project Structure
 ```bash
 TestNest.SmartEnums/
 ├── src/
 │   ├── Domain/
-│   │   ├── Exceptions
-│   │   │    ├── CheckInOutException.cs                # Custom exceptions
-│   │   ├── ValueObjects
-│   │   │    └── Common
-│   │   │    │   └── ValueObject.cs
-│   │   │    └── CheckInOut.cs                                # Sample implementation
-│   │   └── TestNest.StronglyTypeId.csproj
+│   │   ├── Entities/
+│   │   │    └── Visit.cs                          # Visit entity (integration demo)
+│   │   ├── Exceptions/
+│   │   │    ├── CheckInOutException.cs            # CheckInOut exceptions
+│   │   │    └── VisitException.cs                 # Visit exceptions
+│   │   ├── ValueObjects/
+│   │   │    ├── Common/
+│   │   │    │   └── ValueObject.cs                # Base class
+│   │   │    ├── CheckInOut.cs                     # SmartEnum implementation
+│   │   │    └── VisitPurpose.cs                   # Purpose value object
+│   │   └── TestNest.SmartEnums.Domain.csproj
 │   │
-│   └── Console/                                           # Optional test console
-│   │   └── Program.cs
-│   │   └── TestNest.SmartEnums.Console.csproj
+│   └── Console/
+│       └── Program.cs                              # Demo application
+│       └── TestNest.SmartEnums.Console.csproj
 │
 ├── tests/
 │   ├── TestNest.SmartEnums.Test/
-│   │   ├── CheckInOutTestss.cs                    # Unit tests
-│   │   └── TestNest.StronglyTypeId.Test.csproj
+│   │   ├── CheckInOutTests.cs
+│   │   ├── VisitTests.cs
+│   │   └── VisitPurposeTests.cs
 │
 ├── README.md
 └── LICENSE

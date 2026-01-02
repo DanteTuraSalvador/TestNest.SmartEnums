@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\TestNest.StronglyTypeId\TestNest.StronglyTypeId\TestNest.StronglyTypeId.csproj" />
+  </ItemGroup>
+
 </Project>

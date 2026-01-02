@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TestNest.SmartEnums.Domain\TestNest.SmartEnums.Domain.csproj" />
+    <ProjectReference Include="..\..\TestNest.StronglyTypeId\TestNest.StronglyTypeId\TestNest.StronglyTypeId.csproj" />
   </ItemGroup>
 
 </Project>

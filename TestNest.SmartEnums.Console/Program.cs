@@ -1,5 +1,8 @@
-﻿using TestNest.SmartEnums.Domain.Exceptions;
+using TestNest.SmartEnums.Domain.Exceptions;
 using TestNest.SmartEnums.Domain.ValueObjects;
+using TestNest.SmartEnums.Domain.Entities;
+using TestNest.StronglyTypeId.StronglyTypeIds;
+using TestNest.StronglyTypeId.ValueObjects;
 using System;
 
 namespace TestNest.SmartEnums.Console
@@ -19,6 +22,7 @@ namespace TestNest.SmartEnums.Console
                 DemoInvalidTransitions();
                 DemoCompleteLifecycle();
                 DemoImmutability();
+                DemoVisitEntity();
             }
             catch (Exception ex)
             {
@@ -255,5 +259,65 @@ namespace TestNest.SmartEnums.Console
      System.Console.WriteLine($"⚠️ {ex.Message}");
      System.Console.ResetColor();
  }
+
+        static void DemoVisitEntity()
+        {
+            System.Console.ForegroundColor = ConsoleColor.Green;
+            System.Console.WriteLine("\n========== 8️⃣ VISIT ENTITY DEMO ==========");
+            System.Console.WriteLine("Combining SmartEnum + Strongly Typed IDs + Value Objects\n");
+            System.Console.ResetColor();
+
+            // Create value objects
+            var guestId = GuestId.New();
+            var purpose = VisitPurpose.Create("Product demo and partnership discussion", VisitCategory.Business);
+            var location = Address.Create("100 Tech Plaza", "San Francisco", "CA", "94102", "USA");
+            var email = Email.Create("visitor@company.com");
+            var phone = PhoneNumber.Create("+1", "5551234567");
+
+            // Create the visit
+            var visit = Visit.Create(guestId, purpose, location, email, phone, "Jane Smith");
+
+            System.Console.WriteLine("Created Visit:");
+            System.Console.WriteLine($"  ID: {visit.Id}");
+            System.Console.WriteLine($"  Guest ID: {visit.GuestId}");
+            System.Console.WriteLine($"  Purpose: {visit.Purpose}");
+            System.Console.WriteLine($"  Location: {visit.Location.ToSingleLineString()}");
+            System.Console.WriteLine($"  Host: {visit.HostName}");
+            System.Console.WriteLine($"  Status: {visit.CheckInOut.Status}");
+            System.Console.WriteLine($"  Is Pending: {visit.IsPending()}");
+
+            // Check in
+            System.Console.ForegroundColor = ConsoleColor.DarkCyan;
+            System.Console.WriteLine("\n--- Checking In ---");
+            System.Console.ResetColor();
+
+            var checkInTime = DateTime.UtcNow.AddSeconds(-4);
+            visit.CheckIn(checkInTime);
+            visit.AssignBadge("V-2024-001");
+
+            System.Console.WriteLine($"  Status: {visit.CheckInOut.Status}");
+            System.Console.WriteLine($"  Badge: {visit.BadgeNumber}");
+            System.Console.WriteLine($"  Is Active: {visit.IsActive()}");
+            System.Console.WriteLine($"  Check-In Time: {visit.CheckInOut.CheckInDateTime:HH:mm:ss UTC}");
+
+            // Check out
+            System.Console.ForegroundColor = ConsoleColor.DarkCyan;
+            System.Console.WriteLine("\n--- Checking Out ---");
+            System.Console.ResetColor();
+
+            visit.CheckOut();
+
+            System.Console.WriteLine($"  Status: {visit.CheckInOut.Status}");
+            System.Console.WriteLine($"  Is Completed: {visit.IsCompleted()}");
+            System.Console.WriteLine($"  Duration: {visit.GetDuration():mm\\:ss}");
+            System.Console.WriteLine($"  Check-Out Time: {visit.CheckInOut.CheckOutDateTime:HH:mm:ss UTC}");
+
+            // Display combined info
+            System.Console.ForegroundColor = ConsoleColor.Cyan;
+            System.Console.WriteLine($"\nFinal: {visit}");
+            System.Console.ResetColor();
+
+            System.Console.WriteLine("\n========================================");
+        }
     }
 }
